@@ -2,7 +2,7 @@
 
 A local Flask application for preparing preliminary residential drafting estimates. It calculates itemized fees for new builds, produces ranges for additions and remodels, and flags scopes that need review. Saved estimates and revisions retain their original line items in SQLite.
 
-## Run locally
+## Quickstart
 
 Use Python 3.10 or later.
 
@@ -12,11 +12,18 @@ python3 -m venv .venv
 .venv/bin/python demo.py
 ```
 
-Open the [estimate form](http://127.0.0.1:5051/section-preview). Use fictional contact details in the demo. Stopping the server discards the demo database.
+1. Open the [estimate form](http://127.0.0.1:5051/section-preview) and select **Single-family residence**.
+2. Enter **2,500 sq ft** of main enclosed area and **300 sq ft** of attached garage area. Select **Standard residential site plan** and **Energy code documents (WSEC)**.
+3. Click **Preview my estimate**. The total is **$5,720**. Open **Pricing breakdown** to see both area charges and the two fixed fees.
+
+Follow the [new-build pricing calculation](pricing.py#L79) and its [regression test for this example](test_pricing.py#L8).
+
+Use fictional contact details in the demo. Stopping the server discards the demo database.
+
+### More examples
 
 | Project | Inputs | Expected result |
 | --- | --- | --- |
-| Single-family residence | 2,500 sq ft house, 300 sq ft attached garage, site plan and energy code documents | $5,720 |
 | Addition | 250 sq ft of new enclosed space | $1,360–$1,840 |
 | Interior remodel | 220 sq ft of remodeled interior space and a site plan | $1,982.50–$2,417.50 |
 | Porch with unknown area | Select a porch or deck, leave its area blank, and select a site plan | Review required, with a $750 partial subtotal |
