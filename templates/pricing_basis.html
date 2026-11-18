@@ -1,0 +1,19 @@
+<section class="pricing-basis" aria-label="Pricing basis">
+  <h3>Pricing basis</h3>
+  <dl>
+    {% if project_type == 'detached_garage' %}
+    <dt>{{ detached_area_label }}</dt><dd>{{ basis.main_sqft|sqft }} sq ft</dd>
+    {% else %}
+    <dt>{{ main_area_label }}</dt><dd>{{ basis.main_sqft|sqft }} sq ft</dd>
+    {% if basis.attached_garage_sqft|sqft != '0' %}
+    <dt>{{ attached_area_label }}</dt><dd>{{ basis.attached_garage_sqft|sqft }} sq ft</dd>
+    {% endif %}
+    {% endif %}
+  </dl>
+  {% if basis.assumptions %}
+  <ul>
+    {% for assumption in basis.assumptions %}<li>{{ assumption }}</li>{% endfor %}
+  </ul>
+  {% endif %}
+  <p class="muted">Rules version: {{ basis.version }}</p>
+</section>

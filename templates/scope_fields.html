@@ -1,0 +1,28 @@
+<div id="review-fields" data-projects="remodel other">
+  <div data-projects="remodel">
+    <fieldset>
+      <legend>What areas are included?</legend>
+      <p>Enter an approximate size for each area you select. A rough number is fine: 10 × 12 ft is about 120 sq ft. Count each area only once.</p>
+      <div class="{{ field_grid }}">
+        {% for key, label, help in area_fields %}
+        <div>
+          {% set checked = values.get(key + '_included') %}
+          <label class="check">
+            <input type="checkbox" name="{{ key }}_included" data-area-input="{{ key }}" {% if checked %}checked{% endif %}>
+            <span id="{{ key }}-option">{{ label }}</span>
+          </label>
+          <label {% if not checked %}hidden{% endif %}>
+            <span id="{{ key }}-size-label">Approximate area (sq ft)</span>
+            <input type="number" name="{{ key }}" min="0.01" step="any"
+                   aria-labelledby="{{ key }}-option {{ key }}-size-label" aria-describedby="{{ key }}-help"
+                   value="{{ values.get(key,'') }}" {% if not checked %}disabled{% endif %}>
+            <small id="{{ key }}-help">{{ help }}</small>
+          </label>
+        </div>
+        {% endfor %}
+      </div>
+    </fieldset>
+  </div>
+  <label>Describe the work you need<textarea name="scope" rows="3" maxlength="3000">{{ values.get('scope','') }}</textarea></label>
+  {% if values.prior_scope_note %}<p class="muted preserve">{{ values.prior_scope_note }}</p>{% endif %}
+</div>

@@ -1,0 +1,67 @@
+{% set estimate_range = estimate.get('estimate_range') %}
+{% set travel = estimate.get('travel') or {} %}
+<div class="{{ total_class }}">
+  {% if estimate_range %}
+  <span>Estimated total range{{ ' including driving' if travel.low is defined else '' }}</span>
+  <strong>{{ travel.get('low', estimate_range.low)|money }}–{{ travel.get('high', estimate_range.high)|money }}</strong>
+  {% elif estimate.total is not none %}
+  <span>Estimated total{{ ' including driving' if travel.total is defined else '' }}</span>
+  <strong>{{ travel.get('total', estimate.total)|money }}</strong>
+  {% else %}
+  <span>Estimate status</span><strong>Needs review</strong>
+  {% endif %}
+</div>
+{% if travel.pending %}<p>Travel pending: {{ travel.pending }} The amounts shown exclude driving.</p>{% endif %}
+{% if estimate.review is defined %}
+  {% with review=estimate.review %}{% include "review_result.html" %}{% endwith %}
+{% endif %}
+{% macro price_rows(items) %}
+  {% for item in items %}
+    {% set description = item.description|default(item[0]) %}
+    <div class="{{ line_class }}">
+      <span>{{ description }}</span>
+      <strong>{{ item.amount|default(item[1])|money }}</strong>
+    </div>
+  {% endfor %}
+{% endmacro %}
+{% set items = estimate['items'] %}
+{% set drafting_count = estimate.get('drafting_item_count') %}
+{% if items or travel.amount is defined or drafting_count is not none %}
+<details class="estimate-breakdown">
+  <summary>Pricing breakdown</summary>
+  {% if drafting_count is none %}
+    {{ price_rows(items) }}
+  {% elif drafting_count %}
+    <h3>Drafting</h3>
+    {% if estimate_range %}
+    <p>Rates include on-site measurements, drawings of existing conditions, and drawings of the proposed work.</p>
+    {% endif %}
+    {{ price_rows(items[:drafting_count]) }}
+  {% endif %}
+  {% if estimate_range %}
+    <div class="{{ line_class }}">
+      <span>Estimated drafting range</span>
+      <strong>{{ estimate_range.drafting_low|money }}–{{ estimate_range.drafting_high|money }}</strong>
+    </div>
+  {% endif %}
+  {% if drafting_count is not none %}
+    <h3>Additional services</h3>
+    {{ price_rows(items[drafting_count:]) }}
+    <div class="{{ line_class }}">
+      <span>Additional meetings and site visits, as needed</span>
+      <strong>{{ hourly_rate|money }}/hr</strong>
+    </div>
+  {% endif %}
+  {% if travel.amount is defined %}
+    {% include "travel_result.html" %}
+  {% endif %}
+  {% if not client_preview and estimate.pricing_basis is defined %}
+    {% with basis=estimate.pricing_basis %}{% include "pricing_basis.html" %}{% endwith %}
+  {% elif not client_preview and estimate_range %}
+    <p class="muted">Rules version: {{ estimate_range.version }}</p>
+  {% endif %}
+  {% if client_preview and estimate.pricing_basis is defined %}
+  <p>Permit submittal is not included.</p>
+  {% endif %}
+</details>
+{% endif %}

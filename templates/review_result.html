@@ -1,0 +1,27 @@
+{% if review.reasons or review.scope.description or review.scope.quantities or review.scope.complexity or review.partial_subtotal is not none %}
+<section class="review-result">
+  {% if review.reasons %}
+  <h3>Scope to confirm</h3>
+  <ul>
+    {% for reason in review.reasons %}<li>{{ reason }}</li>{% endfor %}
+  </ul>
+  {% endif %}
+  {% if review.scope.quantities or review.scope.complexity %}
+  <h3>Project areas</h3>
+  <dl>
+    {% if review.scope.work_type in work_types %}<dt>Work requested</dt><dd>{{ work_types[review.scope.work_type] }}</dd>{% endif %}
+    {% if review.scope.drawing_source in legacy_drawing_sources %}
+    <dt>Existing drawings (recorded previously)</dt><dd>{{ legacy_drawing_sources[review.scope.drawing_source] }}</dd>
+    {% endif %}
+    {% if review.scope.complexity in complexities %}<dt>Complexity</dt><dd>{{ complexities[review.scope.complexity] }}</dd>{% endif %}
+    {% for quantity in review.scope.get('quantities', {}).values() %}
+    <dt>{{ quantity.label }}</dt><dd>{% if quantity.value is not none %}{{ quantity.value|sqft }} {{ quantity.unit }}{% else %}Not yet known{% endif %}</dd>
+    {% endfor %}
+  </dl>
+  {% endif %}
+  {% if review.scope.description %}<p class="preserve">{{ review.scope.description }}</p>{% endif %}
+  {% if review.partial_subtotal is not none %}
+  <p><strong>Partial subtotal: {{ review.partial_subtotal|money }}</strong> for priced services.</p>
+  {% endif %}
+</section>
+{% endif %}

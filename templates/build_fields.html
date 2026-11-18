@@ -1,0 +1,17 @@
+{% set selected_project = values.get('project_type', 'single_family') %}
+<div class="{{ field_grid }} build-fields" data-projects="single_family multi_family detached_garage">
+  <label>
+    <span data-projects="single_family multi_family" {% if selected_project == 'detached_garage' %}hidden{% endif %}>{{ main_area_label }} (sq ft)</span>
+    <span data-projects="detached_garage" {% if selected_project != 'detached_garage' %}hidden{% endif %}>{{ detached_area_label }} (sq ft)</span>
+    <input name="main_sqft" type="number" min="0" step="0.01" value="{{ values.get('main_sqft','') }}">
+    <small data-projects="single_family" {% if selected_project != 'single_family' %}hidden{% endif %}>Include all enclosed house area, including bedrooms, bathrooms, and bonus rooms. Enter any attached garage separately.</small>
+    <small data-projects="multi_family" {% if selected_project != 'multi_family' %}hidden{% endif %}>Include the enclosed area of every unit (both sides of a duplex). Enter attached garages separately.</small>
+    <small data-projects="detached_garage" {% if selected_project != 'detached_garage' %}hidden{% endif %}>Enter the total enclosed square footage of the detached garage or shop.</small>
+  </label>
+  <label data-projects="single_family multi_family"
+         {% if selected_project == 'detached_garage' %}hidden{% endif %}>{{ attached_area_label }} (sq ft)
+    <input name="attached_garage_sqft" type="number" min="0" step="0.01" value="{{ values.get('attached_garage_sqft','') }}"
+           {% if selected_project == 'detached_garage' %}disabled{% endif %}>
+    <small>Include all enclosed attached garage space. Leave blank if none.</small>
+  </label>
+</div>

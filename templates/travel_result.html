@@ -1,0 +1,7 @@
+<div class="{{ line_class }}">
+  <span>Round-trip driving{% if not client_preview %} · {{ travel.minutes }} min at {{ travel.rate|money }}/hr{% endif %}</span>
+  <strong>{{ travel.amount|money }}</strong>
+</div>
+{% if not client_preview %}<p>From {{ travel.origin }} and back, rounded to the nearest half hour.</p>{% endif %}
+{% if config.DEMO_MODE %}<p>Simulated driving.</p>
+{% else %}<p>Routing based on <a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>.</p>{% endif %}

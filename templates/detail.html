@@ -1,0 +1,28 @@
+{% extends 'base.html' %}{% block content %}<a href="{{ url_for('index') }}">← All estimates</a><p class="eyebrow">DRAFT #{{ record_id }}</p><h1>{{ inquiry.title }}</h1>
+{% if parent_id %}<p>Revision of <a href="{{ url_for('detail', record_id=parent_id) }}">estimate #{{ parent_id }}</a></p>{% endif %}
+{% if revisions %}<p>Saved revisions: {% for revision in revisions %}<a href="{{ url_for('detail', record_id=revision) }}">Estimate #{{ revision }}</a>{{ ', ' if not loop.last else '' }}{% endfor %}</p>{% endif %}
+<a class="button" href="{{ url_for('new', parent_id=record_id) }}">Create revision</a><p class="muted">Saved <time datetime="{{ created_at }}">{{ created_at }}</time></p><p>{{ inquiry.name }} · {{ inquiry.email }}</p><section><h2>{{ projects[inquiry.project_type] }}</h2>{% with estimate=snapshot, project_type=inquiry.project_type, line_class='line', total_class='total' %}
+  {% include "estimate_summary.html" %}
+{% endwith %}
+{% if snapshot.pricing_basis is not defined and snapshot.total is not none %}
+<p class="muted">Legacy estimate · Pricing rules version was not recorded.</p>
+<dl>
+{% if inquiry.project_type == 'detached_garage' and inquiry.main_sqft %}<dt>Recorded enclosed garage or shop area</dt><dd>{{ inquiry.main_sqft }} sq ft</dd>{% elif inquiry.main_sqft is defined and inquiry.main_sqft != '' %}<dt>Recorded main enclosed area</dt><dd>{{ inquiry.main_sqft }} sq ft</dd>{% endif %}
+{% if inquiry.project_type != 'detached_garage' and inquiry.attached_garage_sqft is defined and inquiry.attached_garage_sqft != '' %}<dt>Recorded attached garage area</dt><dd>{{ inquiry.attached_garage_sqft }} sq ft</dd>{% endif %}
+{% if inquiry.site_plan is defined %}<dt>Site plan requested</dt><dd>{{ 'Yes' if inquiry.site_plan else 'No' }}</dd>{% endif %}
+{% if inquiry.wsec is defined %}<dt>WSEC requested</dt><dd>{{ 'Yes' if inquiry.wsec else 'No' }}</dd>{% endif %}
+</dl>
+{% endif %}
+{% if snapshot.review is not defined and snapshot.pricing_basis is not defined %}
+  {% for note in snapshot.notes %}<p class="muted">{{ note }}</p>{% endfor %}
+  {% if inquiry.project_type == 'remodel' and snapshot.total is none %}
+    <h3>Requested services</h3>
+    <dl>
+      <dt>{{ site_plan_label }}</dt><dd>{{ 'Yes' if inquiry.site_plan else 'No' }}</dd>
+      <dt>{{ wsec_label }}</dt><dd>{{ 'Yes' if inquiry.wsec else 'No' }}</dd>
+    </dl>
+  {% endif %}
+{% endif %}
+</section>
+{% if inquiry.project_address %}<p>Project address: {{ inquiry.project_address }}</p>{% endif %}
+{% if inquiry.details %}<section><h2>Project notes</h2><p class="preserve">{{ inquiry.details }}</p></section>{% endif %}<section><h2>Next information to collect</h2><p>Parcel number and photos of the existing lot or building.</p><p class="muted">Saved pricing is preserved as calculated. This draft is not a contract or a promise of final scope.</p></section><a class="button" href="{{ url_for('new') }}">New estimate</a>{% endblock %}
