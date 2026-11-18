@@ -1,34 +1,81 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Estimate section · Private preview</title><link rel="stylesheet" href="{{ url_for('static', filename='site-original.css') }}"><link rel="stylesheet" href="{{ url_for('static', filename='section.css') }}"></head><body>
-<div class="preview-notice">{{ 'DEMO · Fictional data only.' if config.DEMO_MODE else 'OWNER PREVIEW · Nothing is sent to HoneyBook.' }}</div>
-<main><section class="estimate-band" id="estimate"><div class="container estimate-layout"><div class="cta-copy"><p class="eyebrow">Start Your Project</p><h2>Get a fast and free <span class="estimate-mark">estimate.</span></h2><p>Tell us about your project for an initial drafting estimate. Final scope and pricing are confirmed after review.</p><ul class="benefits"><li>Clear, itemized pricing</li><li>Clear next steps for your project</li><li>Personal review for remodels and custom work</li></ul></div>
-<div class="honeybook-panel estimate-panel">
-{% if error %}<p class="form-error" role="alert">{{ error }}</p>{% endif %}
-<form method="post" action="{{ url_for('section_preview') }}#estimate-result">
-<div class="estimate-fields"><label>Project type <span>*</span><select name="project_type" id="project-type">{% for key,label in projects.items() %}<option value="{{ key }}" {% if values.get('project_type') == key %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label></div>
-{% with field_grid="estimate-fields" %}{% include "build_fields.html" %}{% endwith %}
-{% with field_grid="estimate-fields" %}{% include "scope_fields.html" %}{% endwith %}
-<fieldset class="additional-services"><legend>Additional services</legend><label class="check"><input type="checkbox" name="site_plan" {% if 'site_plan' in values %}checked{% endif %}> {{ site_plan_label }}</label><label class="check"><input type="checkbox" name="wsec" {% if 'wsec' in values %}checked{% endif %}> {{ wsec_label }}</label></fieldset>
-<p class="form-help">A rough size is fine. Your estimate will appear below; no contact information is needed yet.</p><button class="button" type="submit"><svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8M8 11h2m4 0h2m-8 4h2m4 0h2m-8 4h2m4 0h2"/></svg> Preview my estimate</button></form>
-{% if result %}<div class="estimate-result" id="estimate-result" role="status">
-<h2>Your estimate</h2>
-{% with estimate=result, client_preview=true, line_class='price-line', total_class='price-line price-total' %}
-  {% include "estimate_summary.html" %}
-{% endwith %}
-<p>Final pricing may change after we confirm the project scope and site conditions.</p>
-<button class="button" type="button" id="next-step" aria-expanded="false" aria-controls="inquiry-step">Like what you see? Take the next step!</button>
-<div id="inquiry-step" hidden>
-  <h3>Let’s plan your project.</h3>
-  <form id="demo-inquiry" aria-describedby="demo-inquiry-help">
-    <p id="demo-inquiry-help">Use fictional contact details. This demo does not save them or send email.</p>
-    <div class="estimate-fields">
-      <label>Full name<input id="inquiry-name" autocomplete="off" pattern=".*\S.*" required></label>
-      <label>Email<input type="email" autocomplete="off" required></label>
-      <label>Phone (optional)<input type="tel" autocomplete="off"></label>
-    </div>
-    <label>Anything else? (optional)<textarea rows="3"></textarea></label>
-    <button class="button" type="submit">Submit demo inquiry</button>
-  </form>
-  <p id="inquiry-confirmation" class="connection-note" tabindex="-1" hidden>Demo inquiry complete. Your estimate is still available above.</p>
-</div>
-</div>{% endif %}
-</div></div></section></main><script src="{{ url_for('static', filename='section.js') }}"></script></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Estimate section · Private preview</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='site-original.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='section.css') }}">
+  </head>
+  <body>
+    <div class="preview-notice">{{ 'DEMO · Fictional data only.' if config.DEMO_MODE else 'OWNER PREVIEW · Nothing is sent to HoneyBook.' }}</div>
+    <main>
+      <section class="estimate-band" id="estimate">
+        <div class="container estimate-layout">
+          <div class="cta-copy">
+            <p class="eyebrow">Start Your Project</p>
+            <h2>Get a fast and free <span class="estimate-mark">estimate.</span></h2>
+            <p>Tell us about your project for an initial drafting estimate. Final scope and pricing are confirmed after review.</p>
+            <ul class="benefits">
+              <li>Clear, itemized pricing</li>
+              <li>Clear next steps for your project</li>
+              <li>Personal review for remodels and custom work</li>
+            </ul>
+          </div>
+          <div class="honeybook-panel estimate-panel">
+            {% if error %}
+              <p class="form-error" role="alert">{{ error }}</p>
+            {% endif %}
+            <form method="post" action="{{ url_for('section_preview') }}#estimate-result">
+              <div class="estimate-fields">
+                <label>Project type <span>*</span><select name="project_type" id="project-type">
+                  {% for key,label in projects.items() %}
+                    <option value="{{ key }}" {% if values.get('project_type') == key %}selected{% endif %}>{{ label }}</option>
+                  {% endfor %}
+                </select></label>
+              </div>
+              {% with field_grid="estimate-fields" %}
+                {% include "build_fields.html" %}
+              {% endwith %}
+              {% with field_grid="estimate-fields" %}
+                {% include "scope_fields.html" %}
+              {% endwith %}
+              <fieldset class="additional-services">
+                <legend>Additional services</legend>
+                <label class="check"><input type="checkbox" name="site_plan" {% if 'site_plan' in values %}checked{% endif %}> {{ site_plan_label }}</label>
+                <label class="check"><input type="checkbox" name="wsec" {% if 'wsec' in values %}checked{% endif %}> {{ wsec_label }}</label>
+              </fieldset>
+              <p class="form-help">A rough size is fine. Your estimate will appear below; no contact information is needed yet.</p>
+              <button class="button" type="submit"><svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8M8 11h2m4 0h2m-8 4h2m4 0h2m-8 4h2m4 0h2"/></svg> Preview my estimate</button>
+            </form>
+            {% if result %}
+              <div class="estimate-result" id="estimate-result" role="status">
+                <h2>Your estimate</h2>
+                {% with estimate=result, client_preview=true, line_class='price-line', total_class='price-line price-total' %}
+                  {% include "estimate_summary.html" %}
+                {% endwith %}
+                <p>Final pricing may change after we confirm the project scope and site conditions.</p>
+                <button class="button" type="button" id="next-step" aria-expanded="false" aria-controls="inquiry-step">Like what you see? Take the next step!</button>
+                <div id="inquiry-step" hidden>
+                  <h3>Let’s plan your project.</h3>
+                  <form id="demo-inquiry" aria-describedby="demo-inquiry-help">
+                    <p id="demo-inquiry-help">Use fictional contact details. This demo does not save them or send email.</p>
+                    <div class="estimate-fields">
+                      <label>Full name<input id="inquiry-name" autocomplete="off" pattern=".*\S.*" required></label>
+                      <label>Email<input type="email" autocomplete="off" required></label>
+                      <label>Phone (optional)<input type="tel" autocomplete="off"></label>
+                    </div>
+                    <label>Anything else? (optional)<textarea rows="3"></textarea></label>
+                    <button class="button" type="submit">Submit demo inquiry</button>
+                  </form>
+                  <p id="inquiry-confirmation" class="connection-note" tabindex="-1" hidden>Demo inquiry complete. Your estimate is still available above.</p>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="{{ url_for('static', filename='section.js') }}"></script>
+  </body>
+</html>

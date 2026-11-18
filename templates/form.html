@@ -1,10 +1,46 @@
-{% extends 'base.html' %}{% block content %}<a href="{{ url_for('index') }}">← All estimates</a>{% if parent_id %}
-<h1>Revise estimate #{{ parent_id }}</h1>
-<p>Saving creates a new draft using current pricing and keeps the <a href="{{ url_for('detail', record_id=parent_id) }}">previous estimate</a> intact.</p>
-{% else %}<h1>New draft estimate</h1>{% endif %}
-{% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
-<form method="post"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><section><h2>01 · Client & project</h2><div class="grid">{% for key,label,type in [('name','Client name','text'),('email','Email','email'),('title','Project name','text')] %}<label>{{ label }}<input name="{{ key }}" type="{{ type }}" maxlength="200" value="{{ values.get(key,'') }}" required></label>{% endfor %}<label>Project type<select name="project_type" id="project-type">{% for key,label in projects.items() %}<option value="{{ key }}" {% if values.get('project_type') == key %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label></div></section>
-<section><h2>02 · Scope & pricing</h2>{% with field_grid="grid" %}{% include "build_fields.html" %}{% endwith %}
-{% with field_grid="grid" %}{% include "scope_fields.html" %}{% endwith %}
-<div class="options"><label><input type="checkbox" name="site_plan" {% if 'site_plan' in values %}checked{% endif %}> {{ site_plan_label }} · {{ site_plan_fee|money }}</label><label><input type="checkbox" name="wsec" {% if 'wsec' in values %}checked{% endif %}> {{ wsec_label }} · {{ wsec_fee|money }}</label></div><p class="muted">Single-family $1.65/sq ft · Multi-family $1.40/sq ft · Detached garage/shop $1.10/sq ft. Hourly services $90/hour; hours determined after review. Known services may be priced separately when other work needs review.</p>
-<label>Project notes<textarea name="details" rows="4" maxlength="5000">{{ values.get('details','') }}</textarea></label></section><button type="submit">{{ 'Calculate & save revision' if parent_id else 'Calculate & save draft' }}</button></form><script src="{{ url_for('static', filename='section.js') }}"></script>{% endblock %}
+{% extends 'base.html' %}
+{% block content %}
+  <a href="{{ url_for('index') }}">← All estimates</a>
+  {% if parent_id %}
+    <h1>Revise estimate #{{ parent_id }}</h1>
+    <p>Saving creates a new draft using current pricing and keeps the <a href="{{ url_for('detail', record_id=parent_id) }}">previous estimate</a> intact.</p>
+  {% else %}
+    <h1>New draft estimate</h1>
+  {% endif %}
+  {% if error %}
+    <p class="error" role="alert">{{ error }}</p>
+  {% endif %}
+  <form method="post">
+    <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+    <section>
+      <h2>01 · Client & project</h2>
+      <div class="grid">
+        {% for key,label,type in [('name','Client name','text'),('email','Email','email'),('title','Project name','text')] %}
+          <label>{{ label }}<input name="{{ key }}" type="{{ type }}" maxlength="200" value="{{ values.get(key,'') }}" required></label>
+        {% endfor %}
+        <label>Project type<select name="project_type" id="project-type">
+          {% for key,label in projects.items() %}
+            <option value="{{ key }}" {% if values.get('project_type') == key %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select></label>
+      </div>
+    </section>
+    <section>
+      <h2>02 · Scope & pricing</h2>
+      {% with field_grid="grid" %}
+        {% include "build_fields.html" %}
+      {% endwith %}
+      {% with field_grid="grid" %}
+        {% include "scope_fields.html" %}
+      {% endwith %}
+      <div class="options">
+        <label><input type="checkbox" name="site_plan" {% if 'site_plan' in values %}checked{% endif %}> {{ site_plan_label }} · {{ site_plan_fee|money }}</label>
+        <label><input type="checkbox" name="wsec" {% if 'wsec' in values %}checked{% endif %}> {{ wsec_label }} · {{ wsec_fee|money }}</label>
+      </div>
+      <p class="muted">Single-family $1.65/sq ft · Multi-family $1.40/sq ft · Detached garage/shop $1.10/sq ft. Hourly services $90/hour; hours determined after review. Known services may be priced separately when other work needs review.</p>
+      <label>Project notes<textarea name="details" rows="4" maxlength="5000">{{ values.get('details','') }}</textarea></label>
+    </section>
+    <button type="submit">{{ 'Calculate & save revision' if parent_id else 'Calculate & save draft' }}</button>
+  </form>
+  <script src="{{ url_for('static', filename='section.js') }}"></script>
+{% endblock %}

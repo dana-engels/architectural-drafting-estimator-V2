@@ -1,15 +1,84 @@
-.preview-notice{padding:12px 24px;background:#fff7e9;color:#5c3b0a;font:500 12px/1.5 Arial,sans-serif;text-align:center;letter-spacing:.04em}.estimate-band{min-height:100vh}.benefits{padding-left:20px;margin-top:35px;color:#e0e7e6;font-size:15px}.benefits li{margin:15px 0}.estimate-fields{display:grid;grid-template-columns:1fr 1fr;gap:23px}.estimate-panel label{display:block;font-size:15px;font-weight:500}.estimate-panel input:not([type=checkbox]),.estimate-panel select,.estimate-panel textarea{display:block;width:100%;min-width:0;margin-top:8px;padding:13px;border:1px solid #a6b7b9;border-radius:2px;background:#344548;color:#fff;font:inherit;line-height:1.4}.estimate-panel select option{background:#26383b}.estimate-panel small{display:block;color:#ccd7d7;font-size:11px;line-height:1.5;margin-top:7px}
+.preview-notice {
+  padding: 12px 24px;
+  background: #fff7e9;
+  color: #5c3b0a;
+  font: 500 12px/1.5 Arial,sans-serif;
+  text-align: center;
+  letter-spacing: .04em;
+}
+
+.estimate-band {
+  min-height: 100vh;
+}
+
+.benefits {
+  padding-left: 20px;
+  margin-top: 35px;
+  color: #e0e7e6;
+  font-size: 15px;
+}
+
+.benefits li {
+  margin: 15px 0;
+}
+
+.estimate-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 23px;
+}
+
+.estimate-panel label {
+  display: block;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.estimate-panel input:not([type=checkbox]),.estimate-panel select,.estimate-panel textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin-top: 8px;
+  padding: 13px;
+  border: 1px solid #a6b7b9;
+  border-radius: 2px;
+  background: #344548;
+  color: #fff;
+  font: inherit;
+  line-height: 1.4;
+}
+
+.estimate-panel select option {
+  background: #26383b;
+}
+
+.estimate-panel small {
+  display: block;
+  color: #ccd7d7;
+  font-size: 11px;
+  line-height: 1.5;
+  margin-top: 7px;
+}
+
 .estimate-panel fieldset {
   padding: 4px 0 0;
   border: 0;
   margin: 12px 0 0;
 }
-.estimate-panel legend { font-size: 15px; }
-.estimate-panel fieldset > p { margin: 0 0 6px; }
+
+.estimate-panel legend {
+  font-size: 15px;
+}
+
+.estimate-panel fieldset > p {
+  margin: 0 0 6px;
+}
+
 .estimate-panel fieldset > .estimate-fields {
   grid-template-columns: minmax(0, 1fr);
   gap: 0;
 }
+
 .estimate-panel .check {
   display: flex;
   align-items: center;
@@ -17,9 +86,11 @@
   min-height: 32px;
   padding: 4px 0;
 }
+
 .estimate-panel .estimate-fields .check + label {
   margin: 2px 0 8px 29px;
 }
+
 .estimate-panel .check input {
   flex: 0 0 auto;
   width: 19px;
@@ -27,21 +98,144 @@
   margin: 0;
   accent-color: #ff9b00;
 }
-.form-help{color:#cbd7d7;font-size:12px;line-height:1.6}.estimate-panel .button{width:100%;cursor:pointer;margin-top:12px;background:#ff9b00;color:#151515;font-weight:700}.estimate-result{margin-top:30px;padding-top:26px;border-top:1px solid #7b9396;scroll-margin-top:24px}.price-line{display:flex;justify-content:space-between;gap:20px;padding:13px 0;border-bottom:1px solid #ffffff26;font-size:14px}.price-line strong{white-space:nowrap}.price-total{font-size:20px;padding:20px 0}.estimate-result p{font-size:13px;color:#d7e1e1}.connection-note{background:#ffffff0d;padding:15px;font-size:12px;border-left:3px solid #ff9b00}.form-error{background:#6d2929;padding:16px}.estimate-panel :focus-visible{outline:3px solid #ffb94c;outline-offset:3px}@media(max-width:680px){.estimate-band .container{width:calc(100% - 30px);padding:45px 0}.estimate-fields{grid-template-columns:1fr;gap:18px}.price-total{font-size:17px}.price-line{gap:10px}.estimate-layout{gap:28px}}
-.estimate-panel [hidden]{display:none!important}.estimate-panel .button{gap:10px}#review-fields{margin-top:22px}#review-fields>label,#demo-inquiry>label{margin-top:22px}#inquiry-step{margin-top:24px;padding-top:20px;border-top:1px solid #ffffff40}
 
-.build-fields{margin-top:22px}
+.form-help {
+  color: #cbd7d7;
+  font-size: 12px;
+  line-height: 1.6;
+}
 
-.estimate-result h2 { margin-bottom: 4px; }
-.estimate-breakdown { margin: 16px 0; }
-.estimate-breakdown > summary { cursor: pointer; }
+.estimate-panel .button {
+  width: 100%;
+  cursor: pointer;
+  margin-top: 12px;
+  background: #ff9b00;
+  color: #151515;
+  font-weight: 700;
+}
+
+.estimate-result {
+  margin-top: 30px;
+  padding-top: 26px;
+  border-top: 1px solid #7b9396;
+  scroll-margin-top: 24px;
+}
+
+.price-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 13px 0;
+  border-bottom: 1px solid #ffffff26;
+  font-size: 14px;
+}
+
+.price-line strong {
+  white-space: nowrap;
+}
+
+.price-total {
+  font-size: 20px;
+  padding: 20px 0;
+}
+
+.estimate-result p {
+  font-size: 13px;
+  color: #d7e1e1;
+}
+
+.connection-note {
+  background: #ffffff0d;
+  padding: 15px;
+  font-size: 12px;
+  border-left: 3px solid #ff9b00;
+}
+
+.form-error {
+  background: #6d2929;
+  padding: 16px;
+}
+
+.estimate-panel :focus-visible {
+  outline: 3px solid #ffb94c;
+  outline-offset: 3px;
+}
+
+@media(max-width:680px) {
+  .estimate-band .container {
+    width: calc(100% - 30px);
+    padding: 45px 0;
+  }
+  .estimate-fields {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .price-total {
+    font-size: 17px;
+  }
+  .price-line {
+    gap: 10px;
+  }
+  .estimate-layout {
+    gap: 28px;
+  }
+}
+
+.estimate-panel [hidden] {
+  display: none!important;
+}
+
+.estimate-panel .button {
+  gap: 10px;
+}
+
+#review-fields {
+  margin-top: 22px;
+}
+
+#review-fields>label,#demo-inquiry>label {
+  margin-top: 22px;
+}
+
+#inquiry-step {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #ffffff40;
+}
+
+.build-fields {
+  margin-top: 22px;
+}
+
+.estimate-result h2 {
+  margin-bottom: 4px;
+}
+
+.estimate-breakdown {
+  margin: 16px 0;
+}
+
+.estimate-breakdown > summary {
+  cursor: pointer;
+}
+
 .estimate-result dl {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 8px 16px;
   font-size: 14px;
 }
-.estimate-result dd { margin: 0; text-align: right; }
 
-.estimate-breakdown h3 { margin: 16px 0 2px; font-size: 15px; }
-.estimate-breakdown .price-line { padding: 9px 0; }
+.estimate-result dd {
+  margin: 0;
+  text-align: right;
+}
+
+.estimate-breakdown h3 {
+  margin: 16px 0 2px;
+  font-size: 15px;
+}
+
+.estimate-breakdown .price-line {
+  padding: 9px 0;
+}
