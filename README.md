@@ -34,12 +34,31 @@ For a persistent local database, run `.venv/bin/python app.py` and open [the own
 
 ## How estimates work
 
-- `pricing.py` calculates fees using decimal arithmetic. New builds use project-specific rates. Additions and remodels use progressive area pricing and a preliminary range. Those drafting rates include on-site measurements and drawings of existing and proposed conditions.
-- `scope_review.py` handles scopes that need review. When a drafting price is unavailable, confirmed service fees can still appear as a partial subtotal.
-- `app.py` uses the same calculation path for preview and save. Each saved record captures its inputs, line items, and pricing rule version. A revision uses current rates and links to the earlier record.
+- `pricing.py` uses decimal arithmetic to avoid binary floating-point errors in money calculations. When an area charge is split into lines, rounding differences are allocated so the lines add up to the rounded combined charge. New builds use project-specific rates.
+- `scope_review.py` calculates addition/remodel ranges and handles scopes that need review. When a drafting price is unavailable, confirmed service fees can still appear as a partial subtotal.
+- `app.py` uses one calculation path so preview and save agree for the same inputs and rates. Each saved record captures its inputs, line items, and pricing rule version instead of recalculating historical prices when rates change. A revision uses current rates and links to the earlier record.
 - `templates/` and `static/` contain the forms and estimate views.
 
 The app runs locally for a single user. Inquiry confirmation is simulated. Authentication, contract delivery, and live website integration are outside this release.
+
+### Addition and remodel ranges
+
+Drafting starts with a $350 setup fee. Selected areas share successive pricing
+brackets: new enclosed space is allocated first, remodeled interior space next,
+and porch/deck space last. A bracket's rate applies only to the area in that bracket.
+
+| Cumulative selected area | Enclosed or remodeled interior | Porch or deck |
+| --- | --- | --- |
+| First 500 sq ft | $5.00/sq ft | $3.00/sq ft |
+| Next 500 sq ft (up to 1,000 total) | $2.50/sq ft | $1.50/sq ft |
+| Above 1,000 sq ft | $1.65/sq ft | $1.50/sq ft |
+
+The preliminary drafting range is 85%–115% of the drafting subtotal, including
+setup. Selected fixed fees—$750 for the site plan and $350 for WSEC—are added
+afterward, so they are not widened by the range. These drafting rates include
+on-site measurements and drawings of existing and proposed conditions.
+See the [bracket calculation](pricing.py#L35) and
+[mixed-area regression test](test_app.py#L245).
 
 ## Verify
 

@@ -1,4 +1,7 @@
-"""Capture review scopes without turning calibration examples into prices."""
+"""Calculate addition/remodel ranges and capture scopes requiring review.
+
+Also translate saved legacy scopes into the current revision form fields.
+"""
 from decimal import Decimal
 
 from pricing import AREA_FIELDS, AREA_RULES_VERSION, area, area_drafting, fixed_services

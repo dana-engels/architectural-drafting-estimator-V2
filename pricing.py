@@ -78,10 +78,11 @@ def area(value):
 
 def estimate(project_type, main_sqft=0, attached_garage_sqft=0,
              site_plan=False, wsec=False):
-    """Return priced line items separately from work requiring further review.
+    """Calculate new-build line items, retaining the review-only remodel fallback.
 
     For detached garages, main_sqft is the garage's enclosed area.
-    Remodels intentionally have no automated total.
+    The application routes remodels through scope_review.review_estimate for
+    area-based ranges; this fallback does not calculate those ranges.
     """
     if project_type == "remodel":
         return {
