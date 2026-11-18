@@ -4,7 +4,9 @@ A local Flask application for preparing preliminary residential drafting estimat
 
 ## Quickstart
 
-Use Python 3.10 or later.
+Use Python 3.10 or later. The commands below use a macOS/Linux shell and run
+from the repository root. SQLite is included with standard Python installations;
+no separate database server is needed.
 
 ```sh
 python3 -m venv .venv
@@ -62,6 +64,8 @@ See the [bracket calculation](pricing.py#L35) and
 
 ## Verify
 
+These optional development tools are separate from running the application.
+
 ```sh
 .venv/bin/python -m unittest discover -v
 .venv/bin/python -m pip install ruff
@@ -78,3 +82,22 @@ To exercise all five project types and inquiry submission in headless Chromium, 
 .venv/bin/python -m playwright install --only-shell chromium
 .venv/bin/python -m unittest -v browser_checks
 ```
+
+On Linux, install Chromium's system dependencies too: replace the browser
+installation command with
+`.venv/bin/python -m playwright install --with-deps --only-shell chromium`.
+Installing these system packages may require administrator access.
+
+### Automated checks
+
+The [CI workflow](.github/workflows/ci.yml) runs on pushes and pull requests
+to `main` and can also be run manually. It uses Ubuntu 24.04, runs backend
+tests on Python 3.10 and 3.14, and runs Ruff, ESLint 10 with Node 24, and the
+five Chromium browser checks on Python 3.14. Backend tests include saving
+estimates in temporary SQLite databases, reopening them with changed rates,
+and preserving original prices and linked revisions.
+
+Open [Actions → CI](https://github.com/dana-engels/architectural-drafting-estimator-V2/actions/workflows/ci.yml),
+select a run, and open a job to see its commands and results for that commit.
+Each run installs dependencies; a failed command fails its job. CI checks the
+local demonstration, not production deployment or every supported environment.
